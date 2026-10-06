@@ -12,6 +12,7 @@
   let scrollTicking = false;
 
   function onScroll() {
+    if (!header) return;
     if (window.scrollY > 60) {
       header.classList.add('scrolled');
     } else {

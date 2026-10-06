@@ -115,7 +115,7 @@
 
   /* ── 4. PARALLAX LEVE NO HERO (Somente telas >= 768px) ────── */
   if (!prefersReduced && !isMobile) {
-    const heroSection = document.getElementById('hero');
+    const heroSection = document.getElementById('inicio');
     const heroImg     = document.querySelector('.hero-main-image');
 
     if (heroSection && heroImg) {
