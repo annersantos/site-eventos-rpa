@@ -1,0 +1,27 @@
+{
+  "name": "05-projeto-rpa",
+  "version": "1.0.0",
+  "description": "> Landing Page One-Page institucional, responsiva e de alta performance desenvolvida para a **R.P.A Produções Eventos e Festas**, salão de festas e organização de eventos localizado em São Paulo - SP.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/annersantos/site-eventos-rpa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/annersantos/site-eventos-rpa/issues"
+  },
+  "homepage": "https://github.com/annersantos/site-eventos-rpa#readme",
+  "dependencies": {
+    "tailwindcss": "^4.3.3"
+  }
+}
