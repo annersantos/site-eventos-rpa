@@ -100,9 +100,25 @@
   /* ── Animações de scroll (Intersection Observer) ─────────── */
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (!prefersReduced) {
-    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  // Seleciona todos os elementos de animação
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
 
+  if (prefersReduced) {
+    // Se o usuário prefere menos movimento, torna tudo visível imediatamente
+    revealEls.forEach(el => el.classList.add('visible'));
+  } else {
+    // ── Força visibilidade imediata nos elementos do Hero (seção #inicio) ──
+    // Isso garante que o Hero apareça mesmo se o IntersectionObserver falhar
+    const heroSection = document.getElementById('inicio');
+    if (heroSection) {
+      heroSection.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+        el.classList.add('visible');
+      });
+    }
+
+    // ── IntersectionObserver para o restante das seções ──
+    // threshold: 0 = dispara quando qualquer pixel do elemento entra na viewport
+    // rootMargin positivo = começa a animação um pouco antes de entrar na tela
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -110,13 +126,33 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px 50px 0px' });
 
-    revealEls.forEach(el => observer.observe(el));
-  } else {
-    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-      el.classList.add('visible');
+    revealEls.forEach(el => {
+      // Só observar elementos que ainda não são visíveis
+      if (!el.classList.contains('visible')) {
+        // Verificar se o elemento já está na viewport no momento do carregamento
+        const rect = el.getBoundingClientRect();
+        const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+        if (inViewport) {
+          el.classList.add('visible');
+        } else {
+          observer.observe(el);
+        }
+      }
     });
+
+    // ── Fallback de segurança ──
+    // Se após 800ms ainda houver elementos invisíveis na viewport, força visibilidade
+    setTimeout(function() {
+      document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+        if (inViewport && !el.classList.contains('visible')) {
+          el.classList.add('visible');
+        }
+      });
+    }, 800);
   }
 
   /* ── Smooth scroll para hash interno ────────────────────── */

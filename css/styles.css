@@ -1122,3 +1122,51 @@ img.lazy-loaded {
   opacity: 1;
   transform: scale(1);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   FALLBACK CRÍTICO DE SEGURANÇA — GARANTE VISIBILIDADE SEM JS
+   ══════════════════════════════════════════════════════════════
+   Se o JavaScript falhar (erro, bloqueador, Safari quirk),
+   esta animação CSS garante que o conteúdo apareça após um delay.
+   Quando JS adiciona .visible, a animação é cancelada e a
+   transição CSS normal assume o controle.
+*/
+
+@keyframes reveal-fallback {
+  from { opacity: 0; }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Hero: visível após 0.3s (garante aparição imediata no mobile) */
+#inicio .reveal,
+#inicio .reveal-left,
+#inicio .reveal-right,
+#inicio .reveal-scale {
+  animation: reveal-fallback 0.7s ease 0.3s both;
+}
+
+/* Quando JS funciona e adiciona .visible ao hero */
+#inicio .reveal.visible,
+#inicio .reveal-left.visible,
+#inicio .reveal-right.visible,
+#inicio .reveal-scale.visible {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* Outras seções: visíveis após 2s como segurança máxima */
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  animation: reveal-fallback 1s ease 2s both;
+}
+
+/* Quando JS funciona corretamente */
+.reveal.visible,
+.reveal-left.visible,
+.reveal-right.visible,
+.reveal-scale.visible {
+  animation: none;
+}
